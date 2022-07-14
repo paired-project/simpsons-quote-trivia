@@ -1,0 +1,12 @@
+// UTILITES
+@import './utilities/variables';
+
+// GLOBAL STYLES
+@import './partials/setup';
+@import './partials/baseStyles';
+@import './partials/typography';
+
+// SITE SECTIONS
+// Global Sections
+@import './partials/header';
+@import './partials/footer';
