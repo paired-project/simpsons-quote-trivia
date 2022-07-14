@@ -3,10 +3,13 @@
 
 // GLOBAL STYLES
 @import './partials/setup';
-@import './partials/base-styles';
 @import './partials/typography';
+@import './partials/base-styles';
 
 // SITE SECTIONS
 // Global Sections
 @import './partials/header';
 @import './partials/footer';
+
+// Main Content Section
+@import './partials/main-content';

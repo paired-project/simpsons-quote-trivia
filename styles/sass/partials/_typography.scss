@@ -1,0 +1,53 @@
+@font-face {
+    font-family: "Simpsons Font";
+    src: 
+    url("../assets/fonts/simpsons-font/simpsons-font.woff") format("woff"),
+    url("../assets/fonts/simpsons-font/simpsons-font.woff2") format("woff2");
+}
+
+html {
+    font-size: 125%;
+}
+
+body {
+    font-size: 1rem;
+    font-family: $body-font;
+    font-weight: 400;
+}
+
+h1, h2, p, ul, li {
+    margin: 0;
+}
+
+h1, h2,
+button {
+    font-family: $heading-font;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2.4rem;
+    line-height: 70px;
+    letter-spacing: 3px;
+}
+
+h2 {
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+}
+
+button {
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+p, ul {
+    line-height: 27px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+

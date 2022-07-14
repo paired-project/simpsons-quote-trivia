@@ -220,3 +220,103 @@ template {
   clip: rect(0 0 0 0);
   overflow: hidden;
 }
+
+@font-face {
+  font-family: "Simpsons Font";
+  src: url("../assets/fonts/simpsons-font/simpsons-font.woff") format("woff"), url("../assets/fonts/simpsons-font/simpsons-font.woff2") format("woff2");
+}
+html {
+  font-size: 125%;
+}
+
+body {
+  font-size: 1rem;
+  font-family: "Lexend Deca", sans-serif;
+  font-weight: 400;
+}
+
+h1, h2, p, ul, li {
+  margin: 0;
+}
+
+h1, h2,
+button {
+  font-family: "Simpsons Font";
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.4rem;
+  line-height: 70px;
+  letter-spacing: 3px;
+}
+
+h2 {
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+}
+
+button {
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+p, ul {
+  line-height: 27px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+body {
+  background-color: #FED439;
+  height: 100vh;
+}
+
+.wrapper {
+  width: 88.9%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+h1 {
+  position: absolute;
+  top: 50px;
+  width: 412px;
+  text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+  -webkit-transform: rotate(-15deg);
+          transform: rotate(-15deg);
+}
+
+li {
+  margin-bottom: 9px;
+}
+
+button {
+  width: 258px;
+  height: 70px;
+  border: none;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 6px 6px rgba(0, 0, 0, 0.25);
+          box-shadow: 0 6px 6px rgba(0, 0, 0, 0.25);
+  background-color: #71D0F5;
+  cursor: pointer;
+}
+
+.header {
+  position: relative;
+  height: 150px;
+}
+
+.main-content {
+  padding: 150px 0 0 0;
+}
+.main-content__text-container {
+  width: 370px;
+}
+.main-content__img-container {
+  position: relative;
+  display: inline;
+}

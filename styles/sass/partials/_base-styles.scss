@@ -1,0 +1,43 @@
+body {
+    background-color: $background;
+    height: 100vh;
+}
+
+.wrapper {
+    width: 88.9%;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+
+h1 {
+    position: absolute;
+    top: 50px;
+
+    width: 412px;
+
+    text-shadow: 4px 4px 8px rgba(black, 0.25);
+
+    transform: rotate(-15deg);
+}
+
+
+li {
+    margin-bottom: 9px;
+}
+
+button {
+    width: 258px;
+    height: 70px;
+    border: none;
+    border-radius: 8px;
+    
+    box-shadow: 0 6px 6px rgba(black, 0.25);
+    background-color: $accent;
+
+    cursor: pointer;
+}
+
+
+
+
+
