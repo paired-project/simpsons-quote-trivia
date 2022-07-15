@@ -37,7 +37,10 @@ button {
     cursor: pointer;
 }
 
-
+.inactive {
+    opacity: 0;
+    z-index: -10;
+}
 
 
 

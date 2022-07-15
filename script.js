@@ -24,6 +24,7 @@ app.getCharacterData = (url) => {
 
 app.getCharacterList = (data) => {
     console.log(data);
+    // add error handling!!
 }
 
 app.getQuote = (data) => {
@@ -34,8 +35,31 @@ app.getQuote = (data) => {
     console.log(app.characterQuote);
 }
 
+app.landingPageButton = document.querySelector('#landing-page-button');
+app.mainPageButton = document.querySelector('#main-page-button');
+
+app.landingPage = document.querySelector('.main-content__text-container--landing-page');
+app.mainPage = document.querySelector('.main-content__text-container--main');
+
+app.headingElement = app.mainPage.children[0];
+app.quoteElement = app.mainPage.children[1];
+
+
+app.landingPageButton.addEventListener('click', function() {
+    // app.headingElement.textContent = app.characterName;
+    app.quoteElement.textContent = app.characterQuote;
+
+    app.landingPage.classList.toggle('inactive');
+    app.mainPage.classList.remove('inactive');
+})
+
+// app.mainPageButton.addEventListener('click', function() {
+
+// })
+
+
 app.init = () => {
-    app.getCharacterData(app.getCharactersUrl);
+    // app.getCharacterData(app.getCharactersUrl);
     app.getCharacterData(app.getQuoteUrl);
 }
 

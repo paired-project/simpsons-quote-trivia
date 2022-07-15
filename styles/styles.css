@@ -305,6 +305,11 @@ button {
   cursor: pointer;
 }
 
+.inactive {
+  opacity: 0;
+  z-index: -10;
+}
+
 .header {
   position: relative;
   height: 150px;
@@ -334,6 +339,8 @@ button {
           justify-content: space-between;
   grid-column: 2/span 1;
   grid-row: 1/span 1;
+  -webkit-transition: 1s;
+  transition: 1s;
 }
 .main-content__img-container {
   grid-column: 3/span 1;
