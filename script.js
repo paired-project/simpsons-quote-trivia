@@ -1,26 +1,30 @@
 const app = {};
 app.characterDataArray = [];
 
-app.url = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
-// app.characterName = '';
-// app.characterQuote = '';
+app.getQuoteUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
+app.getCharactersUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
 
-// app.url.search = new URLSearchParams({
-//     count: '100'
-// })
+app.getCharactersUrl.search = new URLSearchParams({
+    count: '100'
+});
 
-app.characterData = () => {
-    fetch(app.url)
-    .then((response) => {
-        console.log('response:', response);
-        return response.json();
-    })
-    .then((jsonData) => {
-        console.log(jsonData);
-        app.getQuote(jsonData);
-    })
+app.getCharacterData = (url) => {
+    fetch(url)
+        .then((response) => {
+            return response.json();
+        })
+        .then((jsonData) => {
+            if (jsonData[1]) {
+                app.getCharacterList(jsonData);
+            } else {
+                app.getQuote(jsonData);
+            }
+        })
 }
 
+app.getCharacterList = (data) => {
+    console.log(data);
+}
 
 app.getQuote = (data) => {
     app.characterName = data[0].character;
@@ -30,12 +34,9 @@ app.getQuote = (data) => {
     console.log(app.characterQuote);
 }
 
-
-
 app.init = () => {
-    app.characterData();
+    app.getCharacterData(app.getCharactersUrl);
+    app.getCharacterData(app.getQuoteUrl);
 }
-
-
 
 app.init();
