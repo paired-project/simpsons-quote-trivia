@@ -1,8 +1,12 @@
 .main-content {
-    padding: 150px 0 0 0;
+    // padding: 150px 0 0 0;
+    // padding: 130px 0 0 0;
+    padding: 100px 0 0 0;
 
     width: calc(200% / 3);
-    margin-left: auto;
+    transition: 0.3s;
+    // margin-left: auto;
+    margin: 0 0 0 auto;
     display: flex;
     justify-content: space-between;
 
@@ -21,6 +25,15 @@
     &__img-container {
         position: relative;
         display: inline;
-    }
 
+        // img {
+        //     height: 380px;
+        // }
+    }
+}
+
+@media(max-width: 910px) {
+    .main-content {
+        width: 100%;
+    }
 }

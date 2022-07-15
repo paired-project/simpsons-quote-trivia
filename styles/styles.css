@@ -311,9 +311,11 @@ button {
 }
 
 .main-content {
-  padding: 150px 0 0 0;
+  padding: 100px 0 0 0;
   width: 66.6666666667%;
-  margin-left: auto;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  margin: 0 0 0 auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -340,4 +342,10 @@ button {
 .main-content__img-container {
   position: relative;
   display: inline;
+}
+
+@media (max-width: 910px) {
+  .main-content {
+    width: 100%;
+  }
 }
