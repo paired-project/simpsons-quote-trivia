@@ -1,3 +1,23 @@
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
 html {
   line-height: 1.15;
   -ms-text-size-adjust: 100%;
@@ -310,6 +330,10 @@ button {
   z-index: -10;
 }
 
+.hide {
+  display: none;
+}
+
 .header {
   position: relative;
   height: 150px;
@@ -341,6 +365,12 @@ button {
   grid-row: 1/span 1;
   -webkit-transition: 1s;
   transition: 1s;
+}
+.main-content__text-container--landing-page svg {
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear 20;
+          animation: spin 2s linear 20;
 }
 .main-content__img-container {
   grid-column: 3/span 1;
