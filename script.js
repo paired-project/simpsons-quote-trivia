@@ -84,10 +84,11 @@ app.revealButton.addEventListener('click', function() {
 });
 
 app.nextQuoteButton.addEventListener('click', function() {
+    app.revealPage.classList.toggle('inactive');
+    
     app.updateElements();
     app.getCharacterData(app.getQuoteUrl);
-
-    app.revealPage.classList.toggle('inactive');
+    
     app.mainPage.classList.toggle('inactive');
 });
 
