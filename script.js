@@ -1,4 +1,6 @@
 const app = {};
+
+// empty array to hold list of characters
 app.characterDataArray = [];
 
 app.getQuoteUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
@@ -22,9 +24,11 @@ app.quoteElements = document.querySelectorAll("blockquote");
 app.characterHeading = document.querySelector("#character-name");
 
 app.getCharacterData = (url) => {
+    // LOADING ICON LOGIC
     const buttonText = app.landingPageButton.children[0];
     const buttonIcon = app.landingPageButton.children[1];
 
+    // disable the landing page button on page load
     app.landingPageButton.disabled = true;
     buttonText.classList.toggle('hide');
     buttonIcon.classList.toggle('hide');
@@ -66,8 +70,10 @@ app.updateElements = () => {
     app.quoteElements.forEach((quoteElement) => {
         quoteElement.textContent = app.characterQuote;
     });
-
-    app.characterHeading.textContent = app.characterName;
+    
+    setTimeout(() => {
+        app.characterHeading.textContent = app.characterName;
+    }, 1000);
 }
 
 app.landingPageButton.addEventListener('click', function() {
@@ -85,11 +91,9 @@ app.revealButton.addEventListener('click', function() {
 
 app.nextQuoteButton.addEventListener('click', function() {
     app.revealPage.classList.toggle('inactive');
-    
     app.updateElements();
-    app.getCharacterData(app.getQuoteUrl);
-    
     app.mainPage.classList.toggle('inactive');
+    app.getCharacterData(app.getQuoteUrl);
 });
 
 
