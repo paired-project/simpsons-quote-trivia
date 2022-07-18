@@ -1,21 +1,32 @@
+.loading {
+    position: absolute;
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: $background;
+
+    transition: .5s;
+
+    svg {
+        width: 200px;
+        height: 200px;
+    }
+}
+
 .main-content {
     padding: 150px 0 0 0;
-    // padding: 100px 0 0 0;
     display: grid;
     grid-template-columns: 1fr 40% 1fr;
     grid-template-rows: 1fr;
-    // grid-column-gap: ;
-    // column-gap: ;
 
-    //width: calc(200% / 3);
     transition: 0.3s;
-    //margin: 0 0 0 auto;
-    //display: flex;
-    //justify-content: space-between;
 
     &__text-container {
-        // width: 370px;
-        //min-width: 200px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -31,15 +42,11 @@
             svg {
                 width: 50px;
                 height: 50px;
-                animation: spin 2s linear 20;
             }
         }
     }
 
     &__img-container {
-        // position: relative;
-        // display: inline;
-
         grid-column: 3 / span 1;
         grid-row: 1 / span 1;
         justify-self: end;
