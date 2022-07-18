@@ -1,7 +1,7 @@
 const app = {};
 
 // URL to retrieve a random quote object
-app.getQuoteUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
+app.getQuoteUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes?character=troy`);
 
 // URL to retrieve all available quote objects
 app.getCharactersUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
@@ -23,6 +23,8 @@ app.loadingPage = document.querySelector('.loading');
 
 app.quoteElements = document.querySelectorAll("blockquote");
 app.characterHeading = document.querySelector("#character-name");
+
+app.imageElements = document.querySelectorAll('.main-content__img-container');
 
 app.getCharacterData = (url) => {
     const buttonText = app.landingPageButton.children[0];
@@ -66,8 +68,11 @@ app.getCharacterList = (data) => {
 app.getQuote = (data) => {
     app.characterName = data[0].character;
     app.characterQuote = data[0].quote;
+    app.characterImage = data[0].image;
+
     console.log(app.characterName);
     console.log(app.characterQuote);
+    // console.log(app.imageElements);
 }
 
 // method to update the HTML elements using the data from the next random quote object
@@ -80,6 +85,14 @@ app.updateElements = () => {
 
     // update the reveal page heading with the new character name
     app.characterHeading.textContent = app.characterName;
+    
+    app.imageElements[1].innerHTML = `<div style="background-image: url(${app.characterImage})"></div>`;
+}
+
+app.updateImages = () => {
+    app.imageElements.forEach((imageElement) => {
+        imageElement.classList.toggle('inactive');
+    })
 }
 
 // when the landing page button is clicked...
@@ -90,7 +103,8 @@ app.landingPageButton.addEventListener('click', function() {
     app.getCharacterData(app.getQuoteUrl);
 
     // hide the landing page and display the main page
-    app.landingPage.classList.toggle('inactive');
+    app.mainPage.classList.toggle('inactive');
+    app.landingPage.classList.toggle('inactive'); 
 });
 
 // when the reveal button is clicked...
@@ -98,6 +112,8 @@ app.revealButton.addEventListener('click', function() {
     // hide the main page and display the reveal page
     app.mainPage.classList.toggle('inactive');
     app.revealPage.classList.toggle('inactive');
+
+    app.updateImages();
 });
 
 // when the next quote button is clicked...
@@ -123,6 +139,8 @@ app.nextQuoteButton.addEventListener('click', function() {
     
     // display the main page
     app.mainPage.classList.toggle('inactive');
+
+    app.updateImages();
 });
 
 // on page load...
