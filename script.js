@@ -19,6 +19,7 @@ app.nextQuoteButton = document.querySelector('#next-quote-button');
 app.landingPage = document.querySelector('.main-content__text-container--landing-page');
 app.mainPage = document.querySelector('.main-content__text-container--main');
 app.revealPage = document.querySelector('.main-content__text-container--main-reveal');
+app.loadingPage = document.querySelector('.loading');
 
 app.quoteElements = document.querySelectorAll("blockquote");
 app.characterHeading = document.querySelector("#character-name");
@@ -65,6 +66,8 @@ app.getCharacterList = (data) => {
 app.getQuote = (data) => {
     app.characterName = data[0].character;
     app.characterQuote = data[0].quote;
+    console.log(app.characterName);
+    console.log(app.characterQuote);
 }
 
 // method to update the HTML elements using the data from the next random quote object
@@ -73,12 +76,10 @@ app.updateElements = () => {
     app.quoteElements.forEach((quoteElement) => {
         quoteElement.textContent = app.characterQuote;
     });
-    
-    // Wait 1s before changing the reveal page's content to prevent early reveal
-    setTimeout(() => {
-        // update the reveal page heading with the new character name
-        app.characterHeading.textContent = app.characterName;
-    }, 1000);
+
+
+    // update the reveal page heading with the new character name
+    app.characterHeading.textContent = app.characterName;
 }
 
 // when the landing page button is clicked...
@@ -102,14 +103,27 @@ app.revealButton.addEventListener('click', function() {
 
 // when the next quote button is clicked...
 app.nextQuoteButton.addEventListener('click', function() {
+    // display the loading page
+    app.loadingPage.classList.toggle('inactive');    
+    
     // hide the reveal page
     app.revealPage.classList.toggle('inactive');
-    // update the HTML elements with the values store in namespace variables from the previous api call
-    app.updateElements();
+    
+    // after 2s...
+    setTimeout(() => {
+        // update the HTML elements with the values store in namespace variables from the previous api call
+        app.updateElements();
+        
+        // load the next quote
+        app.getCharacterData(app.getQuoteUrl);
+
+        // hide the loading page
+        app.loadingPage.classList.toggle('inactive');
+    }, 2000)
+    
+    
     // display the main page
     app.mainPage.classList.toggle('inactive');
-    // load the next quote
-    app.getCharacterData(app.getQuoteUrl);
 });
 
 // on page load...
