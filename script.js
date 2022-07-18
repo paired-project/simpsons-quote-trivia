@@ -71,20 +71,21 @@ app.updateElements = () => {
         quoteElement.textContent = app.characterQuote;
     });
     
-    setTimeout(() => {
-        app.characterHeading.textContent = app.characterName;
-    }, 1000);
+
+    app.characterHeading.textContent = app.characterName;
+
 }
 
 app.landingPageButton.addEventListener('click', function() {
     app.updateElements();
     app.getCharacterData(app.getQuoteUrl);
 
+    app.mainPage.classList.toggle('inactive');
     app.landingPage.classList.toggle('inactive');
-    app.mainPage.classList.remove('inactive');
 });
 
 app.revealButton.addEventListener('click', function() {
+    // app.getCharacterData(app.getQuoteUrl);
     app.mainPage.classList.toggle('inactive');
     app.revealPage.classList.toggle('inactive');
 });
