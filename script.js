@@ -1,14 +1,16 @@
 const app = {};
 
-// empty array to hold list of characters
-app.characterDataArray = [];
-
+// URL to retrieve a random quote object
 app.getQuoteUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
-app.getCharactersUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
 
+// URL to retrieve all available quote objects
+app.getCharactersUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
 app.getCharactersUrl.search = new URLSearchParams({
     count: '100'
 });
+
+// empty array to hold list of characters
+app.characterList = [];
 
 app.landingPageButton = document.querySelector('#landing-page-button');
 app.revealButton = document.querySelector('#reveal-button');
@@ -18,18 +20,16 @@ app.landingPage = document.querySelector('.main-content__text-container--landing
 app.mainPage = document.querySelector('.main-content__text-container--main');
 app.revealPage = document.querySelector('.main-content__text-container--main-reveal');
 
-app.headingElement = app.mainPage.children[0];
-// app.quoteElement = app.mainPage.children[1];
 app.quoteElements = document.querySelectorAll("blockquote");
 app.characterHeading = document.querySelector("#character-name");
 
 app.getCharacterData = (url) => {
-    // LOADING ICON LOGIC
     const buttonText = app.landingPageButton.children[0];
     const buttonIcon = app.landingPageButton.children[1];
 
     // disable the landing page button on page load
     app.landingPageButton.disabled = true;
+    // hide the text of the landing page button and show the loading icon
     buttonText.classList.toggle('hide');
     buttonIcon.classList.toggle('hide');
 
@@ -48,57 +48,76 @@ app.getCharacterData = (url) => {
                 app.getQuote(jsonData);
             }
 
+            // enable the landing page button once the initial API calls have completed
             app.landingPageButton.disabled = false;
+            // hide the loading icon and display landing page button's
             buttonText.classList.toggle('hide');
             buttonIcon.classList.toggle('hide');
         });
 }
 
+// method which uses the array of all available quotes to store all of the available character names in the app.characterList array
 app.getCharacterList = (data) => {
     console.log(data);
 }
 
+// method which stores the new character name and quotes in namespace variables after receving the API response for a random quote
 app.getQuote = (data) => {
     app.characterName = data[0].character;
     app.characterQuote = data[0].quote;
-
-    console.log(app.characterName);
-    console.log(app.characterQuote);
 }
 
+// method to update the HTML elements using the data from the next random quote object
 app.updateElements = () => {
+    // update the quote elements with the new quote
     app.quoteElements.forEach((quoteElement) => {
         quoteElement.textContent = app.characterQuote;
     });
     
+    // Wait 1s before changing the reveal page's content to prevent early reveal
     setTimeout(() => {
+        // update the reveal page heading with the new character name
         app.characterHeading.textContent = app.characterName;
     }, 1000);
 }
 
+// when the landing page button is clicked...
 app.landingPageButton.addEventListener('click', function() {
+    // update the HTML elements with the values store in namespace variables from the previous api call
     app.updateElements();
+    // load the next quote
     app.getCharacterData(app.getQuoteUrl);
 
+    // hide the landing page and display the main page
     app.landingPage.classList.toggle('inactive');
     app.mainPage.classList.remove('inactive');
 });
 
+// when the reveal button is clicked...
 app.revealButton.addEventListener('click', function() {
+    // hide the main page and display the reveal page
     app.mainPage.classList.toggle('inactive');
     app.revealPage.classList.toggle('inactive');
 });
 
+// when the next quote button is clicked...
 app.nextQuoteButton.addEventListener('click', function() {
+    // hide the reveal page
     app.revealPage.classList.toggle('inactive');
+    // update the HTML elements with the values store in namespace variables from the previous api call
     app.updateElements();
+    // display the main page
     app.mainPage.classList.toggle('inactive');
+    // load the next quote
     app.getCharacterData(app.getQuoteUrl);
 });
 
-
+// on page load...
 app.init = () => {
-    // app.getCharacterData(app.getCharactersUrl);
+    // create an array of available character names
+    // app.getCharacterList(app.getCharactersUrl);
+
+    // load the first quote 
     app.getCharacterData(app.getQuoteUrl);
 }
 
