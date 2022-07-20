@@ -1,7 +1,7 @@
 const app = {};
 
 // URL to retrieve a random quote object
-app.getQuoteUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
+app.getQuoteUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes?character=troy`);
 
 // URL to retrieve all available quote objects
 app.getCharactersUrl = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
