@@ -1,3 +1,25 @@
+//* PSUEDO-CODE *//
+
+// Character Options Logic
+// On init...
+    // Make a call to the quote API for all quotes
+    // for each object in the returned array...
+        //  push each unique character name to a characterList array stored inside the namespace object
+
+// When a new quote is selected by the API...
+    // create a characterOptions array
+        // store the name of the selected character in the array
+    // create a copy of the characterList array...
+        // remove the character name of the selected quote from the copied array
+        // select three random names from the copied array and add them to the characterOptions array
+
+// Then...
+    // select a random character name from the characterOptions array
+    // create a button element for the selected character
+    // append the new button element to the button container
+    // remove the selected character name from the characterOptions array
+    // repeat for all of the characters in the characterOptions array
+
 const app = {};
 
 // URL to retrieve a random quote object
@@ -27,6 +49,7 @@ app.characterHeading = document.querySelector("#character-name");
 app.imageElements = document.querySelectorAll('.main-content__img-container');
 
 app.getCharacterData = (url) => {
+    // TO DO: Move landing page loading logic to seperate function
     const buttonText = app.landingPageButton.children[0];
     const buttonIcon = app.landingPageButton.children[1];
 
