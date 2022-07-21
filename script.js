@@ -48,16 +48,12 @@ app.characterHeading = document.querySelector("#character-name");
 
 app.imageElements = document.querySelectorAll('.main-content__img-container');
 
-app.getCharacterData = (url) => {
-    // TO DO: Move landing page loading logic to seperate function
-    const buttonText = app.landingPageButton.children[0];
-    const buttonIcon = app.landingPageButton.children[1];
+app.getCharacterData = () => {
+    const url = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
 
-    // disable the landing page button on page load
-    app.landingPageButton.disabled = true;
-    // hide the text of the landing page button and show the loading icon
-    buttonText.classList.toggle('hide');
-    buttonIcon.classList.toggle('hide');
+    url.search = new URLSearchParams({
+        count: '100'
+    });
 
     fetch(url)
         .then((response) => {
@@ -68,17 +64,9 @@ app.getCharacterData = (url) => {
             }
         })
         .then((jsonData) => {
-            if (jsonData[1]) {
-                app.getCharacterList(jsonData);
-            } else {
-                app.getQuote(jsonData);
-            }
-
-            // enable the landing page button once the initial API calls have completed
-            app.landingPageButton.disabled = false;
-            // hide the loading icon and display landing page button's
-            buttonText.classList.toggle('hide');
-            buttonIcon.classList.toggle('hide');
+            //app.getCharacterList(jsonData);
+            app.getQuotes(jsonData);
+            console.log(jsonData);
         });
 }
 
@@ -88,10 +76,11 @@ app.getCharacterList = (data) => {
 }
 
 // method which stores the new character name and quotes in namespace variables after receving the API response for a random quote
-app.getQuote = (data) => {
+app.getQuotes = (data) => {
     app.characterName = data[0].character;
     app.characterQuote = data[0].quote;
     app.characterImage = data[0].image;
+
 
     console.log(app.characterName);
     console.log(app.characterQuote);
@@ -169,10 +158,10 @@ app.nextQuoteButton.addEventListener('click', function() {
 // on page load...
 app.init = () => {
     // create an array of available character names
-    // app.getCharacterList(app.getCharactersUrl);
+    // load the quotes
+    //app.getCharacterList();
 
-    // load the first quote 
-    app.getCharacterData(app.getQuoteUrl);
+    app.getCharacterData();
 }
 
 app.init();
