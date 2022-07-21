@@ -69,6 +69,7 @@ app.getCharacterData = (url) => {
         })
         .then((jsonData) => {
             if (jsonData[1]) {
+                console.log(jsonData);
                 app.getCharacterList(jsonData);
             } else {
                 app.getQuote(jsonData);
@@ -84,7 +85,7 @@ app.getCharacterData = (url) => {
 
 // method which uses the array of all available quotes to store all of the available character names in the app.characterList array
 app.getCharacterList = (data) => {
-    console.log(data);
+    //console.log(data);
 }
 
 // method which stores the new character name and quotes in namespace variables after receving the API response for a random quote
@@ -169,7 +170,7 @@ app.nextQuoteButton.addEventListener('click', function() {
 // on page load...
 app.init = () => {
     // create an array of available character names
-    // app.getCharacterList(app.getCharactersUrl);
+    app.getCharacterData(app.getCharactersUrl);
 
     // load the first quote 
     app.getCharacterData(app.getQuoteUrl);
