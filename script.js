@@ -43,6 +43,9 @@ app.characterHeading = document.querySelector("#character-name");
 app.imageElements = document.querySelectorAll('.main-content__img-container');
 
 app.getCharacterData = () => {
+    // show loading screen
+    app.toggleLoading();
+
     const url = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
 
     url.search = new URLSearchParams({
@@ -61,12 +64,20 @@ app.getCharacterData = () => {
             console.log(jsonData);
             app.getCharacterList(jsonData);
             app.getQuotes(jsonData);
+
+            // hide loading screen
+            app.toggleLoading();
         });
 }
 
 app.randomizer = (arr) => {
     return Math.floor(Math.random() * arr.length);
 }
+
+app.toggleLoading = () => {
+    app.loadingPage.classList.toggle('inactive');
+}
+
 
 // method which uses the array of all available quotes to store all of the available character names in the app.characterList array
 app.getCharacterList = (dataArray) => {
@@ -91,18 +102,6 @@ app.getQuotes = (dataArray) => {
     }
 }
 
-
-//     // update the reveal page heading with the new character name
-//     app.characterHeading.textContent = app.characterName;
-    
-//     app.imageElements[1].innerHTML = `<div style="background-image: url(${app.characterImage})"></div>`;
-// }
-
-// app.updateImages = () => {
-//     app.imageElements.forEach((imageElement) => {
-//         imageElement.classList.toggle('inactive');
-//     })
-// }
 
 app.getNextCharacter = () => {
     const nextCharacter = app.selectedCharacters[0];
@@ -140,7 +139,7 @@ app.getCharacterOptions = () => {
 
 app.appendQuote = () => {
     app.quoteCount++;
-    console.log(app.quoteCount);
+
     app.getNextCharacter();
     const characterOptions = app.getCharacterOptions();
 
@@ -151,84 +150,97 @@ app.appendQuote = () => {
     <h2>Who Said...</h2>
     <blockquote>${app.characterQuote}</blockquote>
     <div id='quote-${app.quoteCount}'>
-        <button type="button" class="character-option" value='${characterOptions[0]}'>${characterOptions[0]}</button>
-        <button type="button" class="character-option" value='${characterOptions[1]}'>${characterOptions[1]}</button>
-        <button type="button" class="character-option" value='${characterOptions[2]}'>${characterOptions[2]}</button>
-        <button type="button" class="character-option" value='${characterOptions[3]}'>${characterOptions[3]}</button>
+        <button type="button" class="character-option button-set-${app.quoteCount}" value='${characterOptions[0]}'>${characterOptions[0]}</button>
+        <button type="button" class="character-option button-set-${app.quoteCount}" value='${characterOptions[1]}'>${characterOptions[1]}</button>
+        <button type="button" class="character-option button-set-${app.quoteCount}" value='${characterOptions[2]}'>${characterOptions[2]}</button>
+        <button type="button" class="character-option button-set-${app.quoteCount}" value='${characterOptions[3]}'>${characterOptions[3]}</button>
     </div>
     `;
-    console.log(nextPage);
-
     app.mainContent.append(nextPage);
 
     const characterButtons = document.querySelector(`#quote-${app.quoteCount}`);
     app.onCharacterButtonsClick(characterButtons);
 
-    // console.log(characterButtons);
-    // characterButtons.addEventListener('click', app.onCharacterButtonsClick(event));
+}
+
+app.revealCharacter = (isCorrect) => {
+    const nextPage = document.createElement('div');
+    nextPage.className = 'reveal';
+
+    nextPage.innerHTML = `
+        <h2>${app.characterName}</h2>
+        <div>
+            <p>${isCorrect ? "Correct" : "Wrong"}</p>
+            <div class="character-image" style="background-image:url('${app.characterImage}')"></div>
+        </div>
+    `;
+
+    app.mainContent.append(nextPage);
+    app.appendQuote();
+}
+
+app.revealScore = () => {
+    const nextPage = document.createElement('div');
+    nextPage.className = 'score';
+
+    const reloadButton = document.createElement('button');
+    reloadButton.innerText = 'Play Again!';
+
+    nextPage.innerHTML = `
+        <h2>Results</h2>
+        <p></p>
+        <p></p>
+    `;
+
+    reloadButton.addEventListener('click', () => {
+        window.location.reload();
+    });
+
+    nextPage.append(reloadButton);
+    app.mainContent.append(nextPage);
 }
 
 // when the landing page button is clicked...
 app.landingPageButton.addEventListener('click', function() {
     app.appendQuote();
+    app.landingPageButton.disabled = "true";
 });
 
 // // when the reveal button is clicked...
-app.onCharacterButtonsClick = (div) => {
+app.onCharacterButtonsClick = (button) => {
 
-    div.addEventListener('click', function(event) {
-        if (event.target.type === 'button') {
+    button.addEventListener('click', function(event) {
+        const userChoice = event.target;
 
-            const nextPage = document.createElement('div');
+        const allButtons = document.querySelectorAll(`.button-set-${app.quoteCount}`);
+        allButtons.forEach((button) => {
+            button.disabled = "true";
+        });
 
-            nextPage.innerHTML = `
-                <h2>${app.characterName}</h2>
-                <div>
-                    <p></p>
-                    <div></div>
-                </div>
-            `;
+        console.log(app.selectedCharacters.length);
+
+        if (userChoice.type === 'button' && app.selectedCharacters.length === 0) {
+            app.revealScore();
+            return;
         }
-        
+
+        if (userChoice.type === 'button') {
+            if (userChoice.value === app.characterName) {
+                userChoice.style.backgroundColor = '#57DC59';
+                //app.score++;
+                app.revealCharacter(true);
+            } else {
+                userChoice.style.backgroundColor = '#F57171';
+                app.revealCharacter(false);
+            }
+        }  
     })
-    
-    
-
-
 };
 
-// // when the next quote button is clicked...
-// app.nextQuoteButton.addEventListener('click', function() {
-//     // display the loading page
-//     app.loadingPage.classList.toggle('inactive');    
-    
-//     // hide the reveal page
-//     app.revealPage.classList.toggle('inactive');
-    
-//     // after 2s...
-//     setTimeout(() => {
-//         // update the HTML elements with the values store in namespace variables from the previous api call
-//         app.updateElements();
-        
-//         // load the next quote
-//         app.getCharacterData(app.getQuoteUrl);
-
-//         // hide the loading page
-//         app.loadingPage.classList.toggle('inactive');
-//     }, 2000)
-    
-    
-//     // display the main page
-//     app.mainPage.classList.toggle('inactive');
-
-//     app.updateImages();
-// });
 
 // on page load...
 app.init = () => {
-    // create an array of available character names
-    // load the quotes
-    //app.getCharacterList();
+
     app.getCharacterData();
 }
 
