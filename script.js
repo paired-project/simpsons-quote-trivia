@@ -30,6 +30,8 @@ app.revealButton = document.querySelector('#reveal-button');
 app.nextQuoteButton = document.querySelector('#next-quote-button');
 
 app.mainContent = document.querySelector('.main-content');
+app.quoteCount = 0;
+
 app.landingPage = document.querySelector('.main-content__text-container--landing-page');
 app.mainPage = document.querySelector('.main-content__text-container--main');
 app.revealPage = document.querySelector('.main-content__text-container--main-reveal');
@@ -116,14 +118,31 @@ app.getCharacterOptions = () => {
         return character !== app.characterName;
     });
     
-
+    const possibleOptions = [];
+    possibleOptions.push(app.characterName);
     
-    //for (let i = 0; i)
+    for (let i = 0; i < 3; i++) {
+        const randomIndex = app.randomizer(wrongAnswers);
+        possibleOptions.push(wrongAnswers[randomIndex]);
+        wrongAnswers.splice(randomIndex, 1);
+    }
+    
+    const shuffledOptions = [];
+
+    for (let i = 0; i < 4; i++) {
+        const randomIndex = app.randomizer(possibleOptions);
+        shuffledOptions.push(possibleOptions[randomIndex]);
+        possibleOptions.splice(randomIndex, 1);
+    }
+
+    return shuffledOptions;
 }
 
 app.appendQuote = () => {
+    app.quoteCount++;
+    console.log(app.quoteCount);
     app.getNextCharacter();
-    app.getCharacterOptions();
+    const characterOptions = app.getCharacterOptions();
 
     const nextPage = document.createElement('div');
     nextPage.className = 'quote';
@@ -131,13 +150,22 @@ app.appendQuote = () => {
     nextPage.innerHTML = `
     <h2>Who Said...</h2>
     <blockquote>${app.characterQuote}</blockquote>
-    <div>
-        <button type="button" class="character-option" value=${app.selectedOptions[0]}>${app.selectedOptions[0]}</button>
-        <button type="button" class="character-option"></button>
-        <button type="button" class="character-option"></button>
-        <button type="button" class="character-option"></button>
+    <div id='quote-${app.quoteCount}'>
+        <button type="button" class="character-option" value='${characterOptions[0]}'>${characterOptions[0]}</button>
+        <button type="button" class="character-option" value='${characterOptions[1]}'>${characterOptions[1]}</button>
+        <button type="button" class="character-option" value='${characterOptions[2]}'>${characterOptions[2]}</button>
+        <button type="button" class="character-option" value='${characterOptions[3]}'>${characterOptions[3]}</button>
     </div>
     `;
+    console.log(nextPage);
+
+    app.mainContent.append(nextPage);
+
+    const characterButtons = document.querySelector(`#quote-${app.quoteCount}`);
+    app.onCharacterButtonsClick(characterButtons);
+
+    // console.log(characterButtons);
+    // characterButtons.addEventListener('click', app.onCharacterButtonsClick(event));
 }
 
 // when the landing page button is clicked...
@@ -146,13 +174,28 @@ app.landingPageButton.addEventListener('click', function() {
 });
 
 // // when the reveal button is clicked...
-// app.revealButton.addEventListener('click', function() {
-//     // hide the main page and display the reveal page
-//     app.mainPage.classList.toggle('inactive');
-//     app.revealPage.classList.toggle('inactive');
+app.onCharacterButtonsClick = (div) => {
 
-//     app.updateImages();
-// });
+    div.addEventListener('click', function(event) {
+        if (event.target.type === 'button') {
+
+            const nextPage = document.createElement('div');
+
+            nextPage.innerHTML = `
+                <h2>${app.characterName}</h2>
+                <div>
+                    <p></p>
+                    <div></div>
+                </div>
+            `;
+        }
+        
+    })
+    
+    
+
+
+};
 
 // // when the next quote button is clicked...
 // app.nextQuoteButton.addEventListener('click', function() {
