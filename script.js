@@ -31,6 +31,9 @@ app.nextQuoteButton = document.querySelector('#next-quote-button');
 
 app.mainContent = document.querySelector('.main-content');
 app.quoteCount = 0;
+app.score = 0;
+
+app.scoreEl = document.querySelector('.score');
 
 app.landingPage = document.querySelector('.main-content__text-container--landing-page');
 app.mainPage = document.querySelector('.main-content__text-container--main');
@@ -74,10 +77,15 @@ app.randomizer = (arr) => {
     return Math.floor(Math.random() * arr.length);
 }
 
+app.positionScoreEl = () => {
+    const wrapper = document.querySelector('.wrapper');
+    app.scoreEl.style.right = `${(wrapper.offsetLeft) - 70}px`;
+}
+
+
 app.toggleLoading = () => {
     app.loadingPage.classList.toggle('inactive');
 }
-
 
 // method which uses the array of all available quotes to store all of the available character names in the app.characterList array
 app.getCharacterList = (dataArray) => {
@@ -144,7 +152,7 @@ app.appendQuote = () => {
     const characterOptions = app.getCharacterOptions();
 
     const nextPage = document.createElement('div');
-    nextPage.className = 'quote';
+    nextPage.className = 'page page--quote';
     
     nextPage.innerHTML = `
     <h2>Who Said...</h2>
@@ -165,7 +173,7 @@ app.appendQuote = () => {
 
 app.revealCharacter = (isCorrect) => {
     const nextPage = document.createElement('div');
-    nextPage.className = 'reveal';
+    nextPage.className = 'page page--reveal';
 
     nextPage.innerHTML = `
         <h2>${app.characterName}</h2>
@@ -176,12 +184,18 @@ app.revealCharacter = (isCorrect) => {
     `;
 
     app.mainContent.append(nextPage);
+
+    if (app.selectedCharacters.length === 0) {
+        app.revealScore();
+        return;
+    }
+
     app.appendQuote();
 }
 
 app.revealScore = () => {
     const nextPage = document.createElement('div');
-    nextPage.className = 'score';
+    nextPage.className = 'page page--score';
 
     const reloadButton = document.createElement('button');
     reloadButton.innerText = 'Play Again!';
@@ -189,7 +203,7 @@ app.revealScore = () => {
     nextPage.innerHTML = `
         <h2>Results</h2>
         <p></p>
-        <p></p>
+        <p>${app.score} / 10</p>
     `;
 
     reloadButton.addEventListener('click', () => {
@@ -206,6 +220,7 @@ app.landingPageButton.addEventListener('click', function() {
     app.landingPageButton.disabled = "true";
 });
 
+
 // // when the reveal button is clicked...
 app.onCharacterButtonsClick = (button) => {
 
@@ -219,15 +234,12 @@ app.onCharacterButtonsClick = (button) => {
 
         console.log(app.selectedCharacters.length);
 
-        if (userChoice.type === 'button' && app.selectedCharacters.length === 0) {
-            app.revealScore();
-            return;
-        }
-
         if (userChoice.type === 'button') {
             if (userChoice.value === app.characterName) {
                 userChoice.style.backgroundColor = '#57DC59';
-                //app.score++;
+                app.score++;
+                app.scoreEl.innerText = app.score;
+
                 app.revealCharacter(true);
             } else {
                 userChoice.style.backgroundColor = '#F57171';
@@ -238,10 +250,11 @@ app.onCharacterButtonsClick = (button) => {
 };
 
 
+
 // on page load...
 app.init = () => {
-
     app.getCharacterData();
+    app.positionScoreEl();
 }
 
 app.init();

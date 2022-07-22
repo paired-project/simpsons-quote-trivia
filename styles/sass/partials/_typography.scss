@@ -20,7 +20,8 @@ h1, h2, p, ul, li {
 }
 
 h1, h2,
-button {
+button,
+.score {
     font-family: $heading-font;
     text-align: center;
 }
@@ -34,6 +35,10 @@ h1 {
 h2 {
     font-size: 1.6rem;
     letter-spacing: 1px;
+}
+
+.score {
+    font-size: 1.6rem;
 }
 
 button {

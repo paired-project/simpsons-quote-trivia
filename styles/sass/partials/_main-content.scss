@@ -18,7 +18,26 @@
     }
 }
 
+// .wrapper {
+//     position: relative;
+// }
 
+.score {
+    position: fixed;
+    bottom: 5vh;
+    right: 0;
+
+    display: flex;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    padding-top: 15px;
+    border-radius: 50%;
+
+    background-color: $accent;
+
+    transition: .5s;
+}
 
 .character-image {
     width: 256px;
