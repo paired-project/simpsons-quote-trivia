@@ -25,25 +25,16 @@ const app = {};
 // empty array to hold list of characters
 app.characterList = [];
 
-app.landingPageButton = document.querySelector('#landing-page-button');
-app.revealButton = document.querySelector('#reveal-button');
-app.nextQuoteButton = document.querySelector('#next-quote-button');
+app.landingPageButton = document.querySelector('.landing-page__button');
 
-app.mainContent = document.querySelector('.main-content');
+app.wrapperEl = document.querySelector('.wrapper--main');
 app.quoteCount = 0;
 app.score = 0;
 
 app.scoreEl = document.querySelector('.score');
 
-app.landingPage = document.querySelector('.main-content__text-container--landing-page');
-app.mainPage = document.querySelector('.main-content__text-container--main');
-app.revealPage = document.querySelector('.main-content__text-container--main-reveal');
 app.loadingPage = document.querySelector('.loading');
 
-app.quoteElements = document.querySelectorAll("blockquote");
-app.characterHeading = document.querySelector("#character-name");
-
-app.imageElements = document.querySelectorAll('.main-content__img-container');
 
 app.getCharacterData = () => {
     // show loading screen
@@ -78,10 +69,9 @@ app.randomizer = (arr) => {
 }
 
 app.positionScoreEl = () => {
-    const wrapper = document.querySelector('.wrapper');
-    app.scoreEl.style.right = `${(wrapper.offsetLeft) - 70}px`;
+    // TO DO: Call this method when the page width changes
+    app.scoreEl.style.right = `${(app.wrapperEl.offsetLeft) - 70}px`;
 }
-
 
 app.toggleLoading = () => {
     app.loadingPage.classList.toggle('inactive');
@@ -89,12 +79,12 @@ app.toggleLoading = () => {
 
 // method which uses the array of all available quotes to store all of the available character names in the app.characterList array
 app.getCharacterList = (dataArray) => {
-    app.availableCharacters = [];
+    app.characterList = [];
 
     dataArray.forEach((characterObject) => {
         const character = characterObject.character;
-        if (!app.availableCharacters.includes(character)) {
-            app.availableCharacters.push(character);
+        if (!app.characterList.includes(character)) {
+            app.characterList.push(character);
         }
     });
 }
@@ -121,7 +111,7 @@ app.getNextCharacter = () => {
 }
 
 app.getCharacterOptions = () => {
-    const wrongAnswers = [...app.availableCharacters].filter((character) => {
+    const wrongAnswers = [...app.characterList].filter((character) => {
         return character !== app.characterName;
     });
     
@@ -151,59 +141,70 @@ app.appendQuote = () => {
     app.getNextCharacter();
     const characterOptions = app.getCharacterOptions();
 
-    const nextPage = document.createElement('div');
-    nextPage.className = 'page page--quote';
+    const nextPage = document.createElement('section');
+    nextPage.className = 'page question';
     
     nextPage.innerHTML = `
     <h2>Who Said...</h2>
-    <blockquote>${app.characterQuote}</blockquote>
-    <div id='quote-${app.quoteCount}'>
+    <blockquote class="question__quote">${app.characterQuote}</blockquote>
+    <div class="question__buttons" id='quote-${app.quoteCount}'>
         <button type="button" class="character-option button-set-${app.quoteCount}" value='${characterOptions[0]}'>${characterOptions[0]}</button>
         <button type="button" class="character-option button-set-${app.quoteCount}" value='${characterOptions[1]}'>${characterOptions[1]}</button>
         <button type="button" class="character-option button-set-${app.quoteCount}" value='${characterOptions[2]}'>${characterOptions[2]}</button>
         <button type="button" class="character-option button-set-${app.quoteCount}" value='${characterOptions[3]}'>${characterOptions[3]}</button>
     </div>
     `;
-    app.mainContent.append(nextPage);
+    app.wrapperEl.append(nextPage);
 
     const characterButtons = document.querySelector(`#quote-${app.quoteCount}`);
     app.onCharacterButtonsClick(characterButtons);
 
 }
 
-app.revealCharacter = (isCorrect) => {
-    const nextPage = document.createElement('div');
-    nextPage.className = 'page page--reveal';
+app.appendCharacterReveal = (isCorrect) => {
+    const nextPage = document.createElement('section');
+    nextPage.className = 'page character-reveal';
 
     nextPage.innerHTML = `
         <h2>${app.characterName}</h2>
-        <div>
-            <p>${isCorrect ? "Correct" : "Wrong"}</p>
-            <div class="character-image" style="background-image:url('${app.characterImage}')"></div>
+        <div class="container">
+            <p>${isCorrect ? "Correct!" : "Try Again!"}</p>
+            <div class="character-reveal__image" style="background-image:url('${app.characterImage}')"></div>
         </div>
     `;
 
-    app.mainContent.append(nextPage);
+    app.wrapperEl.append(nextPage);
 
+    console.log(app.selectedCharacters.length);
     if (app.selectedCharacters.length === 0) {
-        app.revealScore();
+        console.log('reveal score');
+        app.appendScoreReveal();
         return;
     }
 
     app.appendQuote();
 }
 
-app.revealScore = () => {
+app.appendScoreReveal = () => {
     const nextPage = document.createElement('div');
-    nextPage.className = 'page page--score';
+    nextPage.className = 'page results';
 
     const reloadButton = document.createElement('button');
     reloadButton.innerText = 'Play Again!';
 
+    const footer = document.createElement('div');
+    footer.className = 'footer';
+    footer.innerHTML = `
+        <p><a href="junocollege.com">Created at Juno College</a></p>
+        <p>API citation</p>
+    `;
+
     nextPage.innerHTML = `
         <h2>Results</h2>
-        <p></p>
-        <p>${app.score} / 10</p>
+        <div class="container">
+            <p class="results__score">${app.score} <span>/</span> 10</p>
+            <p class="results__quote">“There’s only one thing to do at a moment like this: strut!” <span>- Bart Simpson</span></p>
+        </div>
     `;
 
     reloadButton.addEventListener('click', () => {
@@ -211,7 +212,8 @@ app.revealScore = () => {
     });
 
     nextPage.append(reloadButton);
-    app.mainContent.append(nextPage);
+    nextPage.append(footer);
+    app.wrapperEl.append(nextPage);
 }
 
 // when the landing page button is clicked...
@@ -227,25 +229,25 @@ app.onCharacterButtonsClick = (button) => {
     button.addEventListener('click', function(event) {
         const userChoice = event.target;
 
-        const allButtons = document.querySelectorAll(`.button-set-${app.quoteCount}`);
-        allButtons.forEach((button) => {
-            button.disabled = "true";
-        });
-
-        console.log(app.selectedCharacters.length);
 
         if (userChoice.type === 'button') {
+
+            const allButtons = document.querySelectorAll(`.button-set-${app.quoteCount}`);
+            allButtons.forEach((button) => {
+                button.disabled = "true";
+            });
+
             if (userChoice.value === app.characterName) {
                 userChoice.style.backgroundColor = '#57DC59';
                 app.score++;
                 app.scoreEl.innerText = app.score;
 
-                app.revealCharacter(true);
+                app.appendCharacterReveal(true);
             } else {
                 userChoice.style.backgroundColor = '#F57171';
-                app.revealCharacter(false);
+                app.appendCharacterReveal(false);
             }
-        }  
+        } 
     })
 };
 
