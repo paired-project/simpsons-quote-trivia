@@ -374,6 +374,7 @@ button {
 button:disabled {
   color: black;
   background-color: #71D0F5;
+  cursor: not-allowed;
 }
 
 .inactive {
