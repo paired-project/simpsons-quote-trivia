@@ -67,6 +67,7 @@
 }
 
 .character-reveal {
+    position: relative;
 
     h2 {
         font-size: 2.5rem;
@@ -99,12 +100,26 @@
         position: relative;
         top: 40px;
         width: 100%;
-        height: 60vh;
+        height: 55vh;
 
 
         background-repeat: no-repeat;
         background-size: contain;
         background-position: right;
+    }
+
+    &__button {
+        position: absolute;
+        bottom: 5vh;
+        width: auto;
+        height: auto;
+
+        font-size: 3rem;
+
+        background-color: transparent;
+        box-shadow: none;
+
+        animation: fade-in 1s linear;
     }
 }
 

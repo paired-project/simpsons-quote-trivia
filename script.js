@@ -30,6 +30,7 @@ app.landingPageButton = document.querySelector('.landing-page__button');
 app.wrapperEl = document.querySelector('.wrapper--main');
 app.quoteCount = 0;
 app.score = 0;
+app.screenCount = 1;
 
 app.scoreEl = document.querySelector('.score');
 
@@ -69,12 +70,27 @@ app.randomizer = (arr) => {
 }
 
 app.positionScoreEl = () => {
-    // TO DO: Call this method when the page width changes
-    app.scoreEl.style.right = `${(app.wrapperEl.offsetLeft) - 70}px`;
+    app.scoreEl.style.right = `${(app.wrapperEl.offsetLeft)}px`;
+
+    window.addEventListener('resize', () => {
+        app.scoreEl.style.right = `${(app.wrapperEl.offsetLeft)}px`;
+    });
 }
 
 app.toggleLoading = () => {
     app.loadingPage.classList.toggle('inactive');
+}
+
+app.transitionPage = () => {
+    console.log('scroll');
+
+    console.log(window.innerHeight * app.screenCount);
+    scroll({
+        top: (window.innerHeight * app.screenCount),
+        behavior: "smooth"
+    });
+
+    app.screenCount++;
 }
 
 // method which uses the array of all available quotes to store all of the available character names in the app.characterList array
@@ -135,6 +151,8 @@ app.getCharacterOptions = () => {
     return shuffledOptions;
 }
 
+
+
 app.appendQuote = () => {
     app.quoteCount++;
 
@@ -154,16 +172,21 @@ app.appendQuote = () => {
         <button type="button" class="character-option button-set-${app.quoteCount}" value='${characterOptions[3]}'>${characterOptions[3]}</button>
     </div>
     `;
+
     app.wrapperEl.append(nextPage);
 
     const characterButtons = document.querySelector(`#quote-${app.quoteCount}`);
+    console.log('new buttons');
     app.onCharacterButtonsClick(characterButtons);
-
 }
 
 app.appendCharacterReveal = (isCorrect) => {
     const nextPage = document.createElement('section');
     nextPage.className = 'page character-reveal';
+
+    const downButton = document.createElement('button');
+    downButton.className = 'character-reveal__button';
+    downButton.innerHTML = `<i class="fa-solid fa-circle-down"></i>`;
 
     nextPage.innerHTML = `
         <h2>${app.characterName}</h2>
@@ -173,16 +196,20 @@ app.appendCharacterReveal = (isCorrect) => {
         </div>
     `;
 
+    downButton.addEventListener('click', () => {
+        if (app.selectedCharacters.length === 0) {
+            app.appendScoreReveal();
+        } else {
+            app.appendQuote();
+        }
+        app.transitionPage();
+        downButton.disabled = 'true';
+    });
+
+    nextPage.append(downButton);
+
     app.wrapperEl.append(nextPage);
-
-    console.log(app.selectedCharacters.length);
-    if (app.selectedCharacters.length === 0) {
-        console.log('reveal score');
-        app.appendScoreReveal();
-        return;
-    }
-
-    app.appendQuote();
+    console.log('reveal appended');
 }
 
 app.appendScoreReveal = () => {
@@ -199,11 +226,30 @@ app.appendScoreReveal = () => {
         <p>API citation</p>
     `;
 
+    let resultsQuote = [];
+
+    if (app.score <= 5) {
+        resultsQuote = [
+            "Me fail English? That's unpossible!",
+            "Ralph Wiggum"
+        ];
+    } else if (app.score <= 7) {
+        resultsQuote = [
+            "There’s only one thing to do at a moment like this: strut!",
+            "Bart Simpson"
+        ];
+    } else {
+        resultsQuote = [
+            "Everything’s coming up Milhouse.",
+            "Milhouse Van Houten"
+        ];
+    }
+
     nextPage.innerHTML = `
         <h2>Results</h2>
         <div class="container">
             <p class="results__score">${app.score} <span>/</span> 10</p>
-            <p class="results__quote">“There’s only one thing to do at a moment like this: strut!” <span>- Bart Simpson</span></p>
+            <p class="results__quote">"${resultsQuote[0]}"<span>- ${resultsQuote[1]}</span></p>
         </div>
     `;
 
@@ -220,6 +266,7 @@ app.appendScoreReveal = () => {
 app.landingPageButton.addEventListener('click', function() {
     app.appendQuote();
     app.landingPageButton.disabled = "true";
+    app.transitionPage();
 });
 
 
@@ -228,7 +275,6 @@ app.onCharacterButtonsClick = (button) => {
 
     button.addEventListener('click', function(event) {
         const userChoice = event.target;
-
 
         if (userChoice.type === 'button') {
 
@@ -247,8 +293,10 @@ app.onCharacterButtonsClick = (button) => {
                 userChoice.style.backgroundColor = '#F57171';
                 app.appendCharacterReveal(false);
             }
-        } 
-    })
+        }
+
+        app.transitionPage();
+    });
 };
 
 
