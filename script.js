@@ -69,6 +69,7 @@ app.randomizer = (arr) => {
     return Math.floor(Math.random() * arr.length);
 }
 
+
 app.positionScoreEl = () => {
     app.scoreEl.style.right = `${(app.wrapperEl.offsetLeft)}px`;
 
@@ -81,6 +82,9 @@ app.toggleLoading = () => {
     app.loadingPage.classList.toggle('inactive');
 }
 
+// method to scroll the page on buttons clicks
+// thank you to George Martsoukos for this article that helped us with the scroll logic!
+// https://webdesign.tutsplus.com/tutorials/smooth-scrolling-vanilla-javascript--cms-35165
 app.transitionPage = () => {
     console.log('scroll');
 
@@ -150,8 +154,6 @@ app.getCharacterOptions = () => {
 
     return shuffledOptions;
 }
-
-
 
 app.appendQuote = () => {
     app.quoteCount++;
@@ -298,8 +300,6 @@ app.onCharacterButtonsClick = (button) => {
         app.transitionPage();
     });
 };
-
-
 
 // on page load...
 app.init = () => {

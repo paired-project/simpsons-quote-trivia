@@ -475,10 +475,13 @@ button:disabled {
 }
 .character-reveal h2 {
   font-size: 2.5rem;
+  width: 100%;
+  word-wrap: break-word;
 }
 .character-reveal .container {
   position: relative;
   width: 750px;
+  margin-bottom: 60px;
 }
 .character-reveal p {
   position: absolute;
@@ -512,7 +515,7 @@ button:disabled {
 }
 .character-reveal__button {
   position: absolute;
-  bottom: 5vh;
+  bottom: 6vh;
   width: auto;
   height: auto;
   font-size: 3rem;
@@ -521,6 +524,9 @@ button:disabled {
           box-shadow: none;
   -webkit-animation: fade-in 1s linear;
           animation: fade-in 1s linear;
+}
+.character-reveal__button:disabled {
+  background-color: transparent;
 }
 
 .results {
@@ -648,6 +654,9 @@ button:disabled {
   }
   .question__buttons {
     width: 100%;
+  }
+  .character-reveal .container {
+    margin-bottom: 0;
   }
   .character-reveal p {
     margin-bottom: calc(60vh - 140px);
