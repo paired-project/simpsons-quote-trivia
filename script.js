@@ -1,4 +1,4 @@
-//* PSUEDO-CODE *//
+//* PSEUDO-CODE *//
 
 // Character Options Logic
 // On init...
@@ -25,6 +25,7 @@ const app = {};
 // empty array to hold list of characters
 app.characterList = [];
 
+// Store landing page button as a variable
 app.landingPageButton = document.querySelector('.landing-page__button');
 
 app.wrapperEl = document.querySelector('.wrapper--main');
@@ -34,11 +35,12 @@ app.screenCount = 1;
 
 app.scoreEl = document.querySelector('.score');
 
+// Store loading page element
 app.loadingPage = document.querySelector('.loading');
 
-
+// Step 1 - Create a method that will make an API call for the maximum number of Simpsons quotes and associated data (quote author, quote, and image)
 app.getCharacterData = () => {
-    // show loading screen
+    // Show loading screen while fetch is processing
     app.toggleLoading();
 
     const url = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
@@ -47,6 +49,7 @@ app.getCharacterData = () => {
         count: '100'
     });
 
+    // Make the API call to receive data in the form of an array of objects
     fetch(url)
         .then((response) => {
             if (response.ok) {
@@ -57,14 +60,19 @@ app.getCharacterData = () => {
         })
         .then((jsonData) => {
             console.log(jsonData);
+
+            // Call method on the data to produce a list of all characters provided by the API
             app.getCharacterList(jsonData);
+
+            // Call method on the data to get a list of 10 random quotes
             app.getQuotes(jsonData);
 
-            // hide loading screen
+            // Hide loading screen on compleition of fetch
             app.toggleLoading();
         });
 }
 
+// Method which takes an array and returns a random number between: 0 and the total number of elements within the array
 app.randomizer = (arr) => {
     return Math.floor(Math.random() * arr.length);
 }
@@ -78,6 +86,7 @@ app.positionScoreEl = () => {
     });
 }
 
+// Method to toggle the inactive class, displaying or hiding the loading screen
 app.toggleLoading = () => {
     app.loadingPage.classList.toggle('inactive');
 }
@@ -97,7 +106,7 @@ app.transitionPage = () => {
     app.screenCount++;
 }
 
-// method which uses the array of all available quotes to store all of the available character names in the app.characterList array
+// Method which uses the array of all available quotes to store all of the available character names in the app.characterList array
 app.getCharacterList = (dataArray) => {
     app.characterList = [];
 
@@ -109,7 +118,8 @@ app.getCharacterList = (dataArray) => {
     });
 }
 
-// method which stores the new character name and quotes in namespace variables after receving the API response for a random quote
+// Method which stores 10 random quotes (quote author, quote, and image) in an array (app.selectedCharacters ), stored in the namespace
+    // Once a quote is selected from the array given by the API and passed into the array in the namespace, the quote is deleted from the API-array to avoid selecting duplicate quotes
 app.getQuotes = (dataArray) => {
     app.selectedCharacters = [];
 
@@ -120,7 +130,10 @@ app.getQuotes = (dataArray) => {
     }
 }
 
-
+// Method will look at the array of 10 randomly selected quotes and corresponding data and:
+    // 1. Select the first element from the array
+    // 2. From this element, store the quote, quote author, and image of the author in their respective properties in the namespace
+    // 2. Delete that element from the array via shift
 app.getNextCharacter = () => {
     const nextCharacter = app.selectedCharacters[0];
     app.characterImage = nextCharacter.image;
@@ -130,22 +143,33 @@ app.getNextCharacter = () => {
     app.selectedCharacters.shift();
 }
 
+// Method that generates a list consisting of 3 incorrect characters and the 1 quoted character
 app.getCharacterOptions = () => {
+    // Create a copy of the character list array WITHOUT the quoted character
     const wrongAnswers = [...app.characterList].filter((character) => {
         return character !== app.characterName;
     });
     
+    // Create an empty array that will represent the 4 possible options for the user to select
     const possibleOptions = [];
+    // Add the quoted (correct) character to the possible options array
     possibleOptions.push(app.characterName);
     
+    // Randomly select 3 characters from the wrong answers array
+    // On each loop, push the character to the possible options array and then delete that character from the wrong answers array to avoid duplicate selections
     for (let i = 0; i < 3; i++) {
         const randomIndex = app.randomizer(wrongAnswers);
         possibleOptions.push(wrongAnswers[randomIndex]);
         wrongAnswers.splice(randomIndex, 1);
     }
     
+    // Create an empty array that will store a shuffled version of the possible options array
     const shuffledOptions = [];
 
+    // On each loop:
+    // 1. Randomly select a character from the possible optiosn array
+    // 2. Store this character in the shuffled options array
+    // 3. Remove the character from the possible options array to avoid duplicate selections
     for (let i = 0; i < 4; i++) {
         const randomIndex = app.randomizer(possibleOptions);
         shuffledOptions.push(possibleOptions[randomIndex]);
@@ -155,12 +179,17 @@ app.getCharacterOptions = () => {
     return shuffledOptions;
 }
 
+// Method to 
 app.appendQuote = () => {
     app.quoteCount++;
 
+    // Call method to prepare the details of the next quoted character
     app.getNextCharacter();
+
+    // Call a method that returns an array of 4 characters for the user to guess as the quoted character
     const characterOptions = app.getCharacterOptions();
 
+    
     const nextPage = document.createElement('section');
     nextPage.className = 'page question';
     
