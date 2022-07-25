@@ -10,8 +10,10 @@
 
 // SITE SECTIONS
 // Global Sections
-@import './partials/header';
 @import './partials/footer';
 
-// Main Content Section
-@import './partials/main';
+// Page Sections
+@import './partials/sections/landing-page';
+@import './partials/sections/question';
+@import './partials/sections/character-reveal';
+@import './partials/sections/results';

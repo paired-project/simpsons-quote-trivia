@@ -1,0 +1,43 @@
+.question {
+    h2 {
+        margin-bottom: 40px;
+    }
+
+    &__quote {
+        width: 500px;
+        margin-bottom: 60px;
+
+        text-align: center;
+    }
+
+    &__buttons {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        width: 600px;
+    }
+}
+
+
+@media (max-width: 580px) {
+    .question {
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        &__quote {
+            width: 100%;
+            height: auto;
+            margin: 0 0 20px 0;
+
+            line-height: 25px;
+        }
+
+        &__buttons {
+            gap: 15px;
+            width: 100%;
+        }
+    }
+}
