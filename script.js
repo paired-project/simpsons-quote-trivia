@@ -1,25 +1,3 @@
-//* PSEUDO-CODE *//
-
-// Character Options Logic
-// On init...
-    // Make a call to the quote API for all quotes
-    // for each object in the returned array...
-        //  push each unique character name to a characterList array stored inside the namespace object
-
-// When a new quote is selected by the API...
-    // create a characterOptions array
-        // store the name of the selected character in the array
-    // create a copy of the characterList array...
-        // remove the character name of the selected quote from the copied array
-        // select three random names from the copied array and add them to the characterOptions array
-
-// Then...
-    // select a random character name from the characterOptions array
-    // create a button element for the selected character
-    // append the new button element to the button container
-    // remove the selected character name from the characterOptions array
-    // repeat for all of the characters in the characterOptions array
-
 const app = {};
 
 // Empty array to hold list of characters
@@ -40,6 +18,7 @@ app.score = 0;
 // Variable to use as a factor for the scrolling logic
 app.screenCount = 1;
 
+// Variable to store score element
 app.scoreEl = document.querySelector('.score');
 
 // Store loading page element
@@ -48,7 +27,7 @@ app.loadingPage = document.querySelector('.loading');
 // Store error message element
 app.errorMessage = document.querySelector('.error-message');
 
-// Create a method that will make an API call for the maximum number of Simpsons quotes and associated data (quote author, quote, and image)
+// Create a method that will make an API call for the maximum number of Simpsons quotes available and associated data (quote author, quote, and image)
 app.getCharacterData = () => {
     // Show loading screen while fetch is processing
     app.toggleLoading();
@@ -227,7 +206,7 @@ app.appendQuote = () => {
 }
 
 // A method that:
-    // 1. creates a section containing the image of the quoted character and a status detailing if the user's selection was correct or incorrect
+    // 1. Creates a section containing the image of the quoted character and a status detailing if the user's selection was correct or incorrect
     // 2. Appends section to the page along with a down button
 app.appendCharacterReveal = (isCorrect) => {
     const nextPage = document.createElement('section');
@@ -361,7 +340,7 @@ app.onCharacterButtonsClick = (button) => {
             }
         }
 
-        // Call method to scroll to the  character reveal page below
+        // Call method to scroll to the character reveal page below
         app.transitionPage();
     });
 };
