@@ -45,6 +45,9 @@ app.scoreEl = document.querySelector('.score');
 // Store loading page element
 app.loadingPage = document.querySelector('.loading');
 
+// Store error message element
+app.errorMessage = document.querySelector('.error-message');
+
 // Create a method that will make an API call for the maximum number of Simpsons quotes and associated data (quote author, quote, and image)
 app.getCharacterData = () => {
     // Show loading screen while fetch is processing
@@ -62,6 +65,7 @@ app.getCharacterData = () => {
             if (response.ok) {
                 return response.json();
             } else {
+                app.errorMessage.classList.toggle('inactive');
                 throw new Error(response.statusText);
             }
         })
