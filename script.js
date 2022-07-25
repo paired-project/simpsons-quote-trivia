@@ -270,8 +270,9 @@ app.appendScoreReveal = () => {
     const footer = document.createElement('div');
     footer.className = 'footer';
     footer.innerHTML = `
-        <p><a href="junocollege.com">Created at Juno College</a></p>
-        <p>API citation</p>
+        <p><a href="https://junocollege.com">Created at Juno College</a></p>
+        <span>&#8226</span>
+        <p><a href="http://thesimpsonsquoteapi.glitch.me/">Simpsons Quote API</p>
     `;
 
     // Create an array to store a quote/message to display to the user based on their score
@@ -311,6 +312,8 @@ app.appendScoreReveal = () => {
     nextPage.append(reloadButton);
     nextPage.append(footer);
     app.wrapperEl.append(nextPage);
+
+    document.querySelector('.score').style.opacity = '0';
 }
 
 // When the landing page button is clicked, add quote to page and transition to section below
