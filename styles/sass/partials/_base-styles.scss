@@ -18,14 +18,9 @@ body {
 
 
 h1 {
-    position: absolute;
-    top: 50px;
-
-    width: 412px;
+    width: 450px;
 
     text-shadow: 4px 4px 8px rgba(black, 0.25);
-
-    transform: rotate(-15deg);
 }
 
 h2 {
@@ -37,21 +32,46 @@ li {
 }
 
 button {
-    width: 260px;
+    width: 280px;
     height: 80px;
     border: none;
     border-radius: 8px;
     
     box-shadow: 0 6px 6px rgba(black, 0.25);
-    background-color: $accent;
+    background-color: $button;
+    color: white;
 
     cursor: pointer;
 
     &:disabled {
-        color: black;
-        background-color: $accent;
-        cursor: not-allowed;
+        background-color: $button;
+        color: white;
+
+        cursor: auto;
     }
+
+    &:focus-visible {
+        background-color: $accent;
+        color: black;
+        outline: none !important;
+    }
+}
+
+.score {
+    position: fixed;
+    bottom: 8vh;
+
+    display: flex;
+    justify-content: center;
+    width: 70px;
+    height: 70px;
+    padding-top: 15px;
+    border-radius: 50%;
+
+    background-color: $accent;
+
+    transition: .5s;
+    z-index: 2;
 }
 
 .inactive {
@@ -63,5 +83,23 @@ button {
     display: none !important;
 }
 
+@media (max-width: 580px) {
+    body {
+        font-size: .9rem;
+    }
+
+    button {
+        width: 225px;
+        height: 60px;
+        font-size: .9rem;
+    }
+
+    .score {
+        width: 50px;
+        height: 50px;
+        padding-top: 9px;
+        font-size: 1.2rem;
+    }
+}
 
 
