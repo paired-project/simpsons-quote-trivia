@@ -33,7 +33,7 @@ app.getCharacterData = () => {
     app.toggleLoading();
 
     // Show the landing page and score element (initially hidden to prevent visibility before loading)
-    document.querySelector('landing-page').classList.toggle('inactive');
+    document.querySelector('.landing-page').classList.toggle('inactive');
     app.scoreEl.classList.toggle('inactive');
 
     const url = new URL(`https://thesimpsonsquoteapi.glitch.me/quotes`);
