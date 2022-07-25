@@ -28,9 +28,16 @@ app.characterList = [];
 // Store landing page button as a variable
 app.landingPageButton = document.querySelector('.landing-page__button');
 
+// Store main container as a variable
 app.wrapperEl = document.querySelector('.wrapper--main');
+
+// Variable to keep track of which quote the user is on
 app.quoteCount = 0;
+
+// Variable to track user score
 app.score = 0;
+
+// Variable to use as a factor for the scrolling logic
 app.screenCount = 1;
 
 app.scoreEl = document.querySelector('.score');
@@ -77,7 +84,7 @@ app.randomizer = (arr) => {
     return Math.floor(Math.random() * arr.length);
 }
 
-
+// A method to handling the positioning of the score element
 app.positionScoreEl = () => {
     app.scoreEl.style.right = `${(app.wrapperEl.offsetLeft)}px`;
 
@@ -91,13 +98,10 @@ app.toggleLoading = () => {
     app.loadingPage.classList.toggle('inactive');
 }
 
-// method to scroll the page on buttons clicks
-// thank you to George Martsoukos for this article that helped us with the scroll logic!
+// Method to scroll the page on buttons clicks
+// Thank you to George Martsoukos for this article that helped us with the scroll logic!
 // https://webdesign.tutsplus.com/tutorials/smooth-scrolling-vanilla-javascript--cms-35165
 app.transitionPage = () => {
-    console.log('scroll');
-
-    console.log(window.innerHeight * app.screenCount);
     scroll({
         top: (window.innerHeight * app.screenCount),
         behavior: "smooth"
@@ -179,17 +183,17 @@ app.getCharacterOptions = () => {
     return shuffledOptions;
 }
 
-// Method to 
+// Method to append quote and character choices to page
 app.appendQuote = () => {
     app.quoteCount++;
 
     // Call method to prepare the details of the next quoted character
     app.getNextCharacter();
 
-    // Call a method that returns an array of 4 characters for the user to guess as the quoted character
+    // Call a method that returns an array of 4 character names for the user to guess the quoted character
     const characterOptions = app.getCharacterOptions();
 
-    
+    // Create a section containing 4 buttons, each representing a character option for the user to select
     const nextPage = document.createElement('section');
     nextPage.className = 'page question';
     
@@ -204,13 +208,19 @@ app.appendQuote = () => {
     </div>
     `;
 
+    // Append section to the page (specifically to the wrapper - acting as the container)
     app.wrapperEl.append(nextPage);
 
+    // Store button container element in a variable
     const characterButtons = document.querySelector(`#quote-${app.quoteCount}`);
-    console.log('new buttons');
+
+    // Call method to handle user's character choice
     app.onCharacterButtonsClick(characterButtons);
 }
 
+// A method that:
+// 1. creates a section containing the image of the quoted character and a status detailing if the user's selection was correct or incorrect
+// 2. Appends section to the page along with a down button
 app.appendCharacterReveal = (isCorrect) => {
     const nextPage = document.createElement('section');
     nextPage.className = 'page character-reveal';
@@ -227,12 +237,19 @@ app.appendCharacterReveal = (isCorrect) => {
         </div>
     `;
 
+    // Event listener added to down button that will evaluate if:
+    // 1. There is another quote to be presented for the user to guess OR;
+        // a. In this event, proceed to the next quote
+    // 2. If this is the last quote
+        // a. In this event the user is presented with a final score
     downButton.addEventListener('click', () => {
         if (app.selectedCharacters.length === 0) {
             app.appendScoreReveal();
         } else {
             app.appendQuote();
         }
+
+        // Call method to scroll user to the page below
         app.transitionPage();
         downButton.disabled = 'true';
     });
@@ -240,9 +257,9 @@ app.appendCharacterReveal = (isCorrect) => {
     nextPage.append(downButton);
 
     app.wrapperEl.append(nextPage);
-    console.log('reveal appended');
 }
 
+// Method to create and display the user's results at the end
 app.appendScoreReveal = () => {
     const nextPage = document.createElement('div');
     nextPage.className = 'page results';
@@ -257,6 +274,7 @@ app.appendScoreReveal = () => {
         <p>API citation</p>
     `;
 
+    // Create an array to store a quote/message to display to the user based on their score
     let resultsQuote = [];
 
     if (app.score <= 5) {
@@ -276,6 +294,7 @@ app.appendScoreReveal = () => {
         ];
     }
 
+    // Display message to user
     nextPage.innerHTML = `
         <h2>Results</h2>
         <div class="container">
@@ -284,6 +303,7 @@ app.appendScoreReveal = () => {
         </div>
     `;
 
+    // Event listern to reload the page on button click to restart the game
     reloadButton.addEventListener('click', () => {
         window.location.reload();
     });
@@ -301,19 +321,23 @@ app.landingPageButton.addEventListener('click', function() {
 });
 
 
-// // when the reveal button is clicked...
+// Method to handle the user's character selection via button click
 app.onCharacterButtonsClick = (button) => {
 
+    // Event listener waits for one of the buttons to be clicked
     button.addEventListener('click', function(event) {
         const userChoice = event.target;
 
         if (userChoice.type === 'button') {
 
+            // Upon click, disable all the buttons
             const allButtons = document.querySelectorAll(`.button-set-${app.quoteCount}`);
             allButtons.forEach((button) => {
                 button.disabled = "true";
             });
 
+            // Highlight the button in green (correct) or red (incorrect) and proceed to reveal the character with a message confirming if the user is correct/incorrect via append character reveal
+            // Track user score
             if (userChoice.value === app.characterName) {
                 userChoice.style.backgroundColor = '#57DC59';
                 app.score++;
@@ -326,11 +350,12 @@ app.onCharacterButtonsClick = (button) => {
             }
         }
 
+        // Call method to scroll to the  character reveal page below
         app.transitionPage();
     });
 };
 
-// on page load...
+// Init method to run fetch request and score positioning method
 app.init = () => {
     app.getCharacterData();
     app.positionScoreEl();
