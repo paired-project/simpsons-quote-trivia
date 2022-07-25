@@ -22,7 +22,7 @@
 
 const app = {};
 
-// empty array to hold list of characters
+// Empty array to hold list of characters
 app.characterList = [];
 
 // Store landing page button as a variable
@@ -45,7 +45,7 @@ app.scoreEl = document.querySelector('.score');
 // Store loading page element
 app.loadingPage = document.querySelector('.loading');
 
-// Step 1 - Create a method that will make an API call for the maximum number of Simpsons quotes and associated data (quote author, quote, and image)
+// Create a method that will make an API call for the maximum number of Simpsons quotes and associated data (quote author, quote, and image)
 app.getCharacterData = () => {
     // Show loading screen while fetch is processing
     app.toggleLoading();
@@ -74,7 +74,7 @@ app.getCharacterData = () => {
             // Call method on the data to get a list of 10 random quotes
             app.getQuotes(jsonData);
 
-            // Hide loading screen on compleition of fetch
+            // Hide loading screen on completion of fetch
             app.toggleLoading();
         });
 }
@@ -84,7 +84,7 @@ app.randomizer = (arr) => {
     return Math.floor(Math.random() * arr.length);
 }
 
-// A method to handling the positioning of the score element
+// Method to handle the positioning of the score element
 app.positionScoreEl = () => {
     app.scoreEl.style.right = `${(app.wrapperEl.offsetLeft)}px`;
 
@@ -137,7 +137,7 @@ app.getQuotes = (dataArray) => {
 // Method will look at the array of 10 randomly selected quotes and corresponding data and:
     // 1. Select the first element from the array
     // 2. From this element, store the quote, quote author, and image of the author in their respective properties in the namespace
-    // 2. Delete that element from the array via shift
+    // 3. Delete that element from the array via shift
 app.getNextCharacter = () => {
     const nextCharacter = app.selectedCharacters[0];
     app.characterImage = nextCharacter.image;
@@ -171,9 +171,9 @@ app.getCharacterOptions = () => {
     const shuffledOptions = [];
 
     // On each loop:
-    // 1. Randomly select a character from the possible optiosn array
-    // 2. Store this character in the shuffled options array
-    // 3. Remove the character from the possible options array to avoid duplicate selections
+        // 1. Randomly select a character from the possible options array
+        // 2. Store this character in the shuffled options array
+        // 3. Remove the character from the possible options array to avoid duplicate selections
     for (let i = 0; i < 4; i++) {
         const randomIndex = app.randomizer(possibleOptions);
         shuffledOptions.push(possibleOptions[randomIndex]);
@@ -219,8 +219,8 @@ app.appendQuote = () => {
 }
 
 // A method that:
-// 1. creates a section containing the image of the quoted character and a status detailing if the user's selection was correct or incorrect
-// 2. Appends section to the page along with a down button
+    // 1. creates a section containing the image of the quoted character and a status detailing if the user's selection was correct or incorrect
+    // 2. Appends section to the page along with a down button
 app.appendCharacterReveal = (isCorrect) => {
     const nextPage = document.createElement('section');
     nextPage.className = 'page character-reveal';
@@ -303,7 +303,7 @@ app.appendScoreReveal = () => {
         </div>
     `;
 
-    // Event listern to reload the page on button click to restart the game
+    // Event listener to reload the page on button click to restart the game
     reloadButton.addEventListener('click', () => {
         window.location.reload();
     });
@@ -313,7 +313,7 @@ app.appendScoreReveal = () => {
     app.wrapperEl.append(nextPage);
 }
 
-// when the landing page button is clicked...
+// When the landing page button is clicked, add quote to page and transition to section below
 app.landingPageButton.addEventListener('click', function() {
     app.appendQuote();
     app.landingPageButton.disabled = "true";
