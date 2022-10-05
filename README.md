@@ -32,14 +32,14 @@ Users are presented with a quote from a Simpsons' character and asked to choose 
 
 ## Authors
 
-## Keon Pierre 
+### Keon Pierre 
 
 - [Portfolio Site](https://www.keonpierre.ca/)
 - [LinkedIn](https://www.linkedin.com/in/keonpierre/)
 - [GitHub](https://github.com/keonp)
 - [Twitter](https://twitter.com/Whatsupkeke)
 
-## Frances McKenzie
+### Frances McKenzie
 
 - [Portfolio Site](https://francesm.dev)
 - [LinkedIn](https://www.linkedin.com/in/fr-ncesm/)
