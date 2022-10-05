@@ -10,6 +10,8 @@
 
 ## Overview
 
+A paired programming project developed by [Keon Pierre](#keon-pierre) & [Frances McKenzie](#frances-mckenzie)  
+
 Users are presented with a quote from a Simpsons' character and asked to choose the character that the quote belongs to. Once they make a selection, the correct character's name and image are displayed and the user is informed that their choice was either right or wrong. At the end of the 10 question quiz, the user will see their final result!
 
 ### Screenshot
