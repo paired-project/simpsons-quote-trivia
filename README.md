@@ -5,8 +5,8 @@
   - [Links](#links)
 - [Built with](#built-with)
 - [Authors](#authors)
-  -[Keon Pierre](#keon-pierre)
-  -[Frances McKenzie](#frances-mckenzie)
+  - [Keon Pierre](#keon-pierre)
+  - [Frances McKenzie](#frances-mckenzie)
 
 ## Overview
 
